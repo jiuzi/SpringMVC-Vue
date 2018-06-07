@@ -244,8 +244,6 @@
                 <configuration>
                     <installDirectory>target</installDirectory>
                     <workingDirectory>src/main/vue-src</workingDirectory>
-                    <nodeDownloadRoot>http://storage.jd.local/disk/</nodeDownloadRoot>
-                    <npmDownloadRoot>http://storage.jd.local/disk/npm/</npmDownloadRoot>
                 </configuration>
                 <executions>
                     <execution>
@@ -260,7 +258,6 @@
                         </configuration>
                     </execution>
 
-                    <!-- http://artifactory.jd.com/npm.taobao-cache/ -->
 
                     <execution>
                         <id>npm config</id>
@@ -268,7 +265,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>config set registry http://artifactory.jd.com/api/npm/npm.taobao/</arguments>
+                            <arguments>config set registry http://registry.npm.taobao.org/</arguments>
                         </configuration>
                     </execution>
 

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiuzi.vue.web.dao.PollDao">
+
+    <insert id="insertPoll" parameterType="com.jiuzi.vue.web.domain.Poll">
+        INSERT INTO `poll` (
+			`user_erp`,
+			`user_name`,
+			`voter_erp`,
+			`voter_name`,
+			`week`,
+			`quarter`,
+			`year`,
+			`msg`,
+			`create_time`
+		)
+		VALUES
+			(
+				#{userErp},
+				#{userName},
+				#{voterErp},
+				#{voterName},
+				#{week},
+				#{quarter},
+				#{year},
+				#{msg},
+				NOW()
+			);
+    </insert>
+    <select id="queryPollCount" parameterType="map" resultType="com.jiuzi.vue.web.domain.PollCount">
+        SELECT
+        u.erp AS userErp,
+        u.user_name AS NAME,
+        count(p.id) count
+        FROM
+        user_info u
+        LEFT JOIN poll p ON u.erp = p.voter_erp
+        AND p. WEEK =#{week}
+        <where>
+            u.role <![CDATA[<>]]> 2
+            <if test="role != null and role != '' ">
+                and u.role = #{role}
+            </if>
+        </where>
+        GROUP BY
+        u.user_name
+        ORDER BY
+        count DESC;
+
+    </select>
+
+    <select id="queryPollByUserErpAndWeek" parameterType="map" resultType="com.jiuzi.vue.web.domain.Poll">
+		SELECT
+			p.user_erp AS userErp,
+			p.user_name AS userName,
+			p.voter_erp AS voterErp,
+			p.voter_name AS voterName,
+			( SELECT u.role FROM user_info u WHERE u.erp = p.voter_erp ) AS role,
+			p.`week`,
+			p.`quarter`,
+			p.`year`,
+			p.msg
+		FROM
+			poll p
+		WHERE
+			p.user_erp = #{userErp}
+		AND p.`week` = #{week}
+	</select>
+
+    <select id="queryAllPollInfoList" parameterType="map" resultType="com.jiuzi.vue.web.domain.Poll">
+		SELECT
+			user_name as  userName,
+			voter_name as voterName,
+			msg
+		FROM
+			poll
+		WHERE
+			voter_erp = #{voterErp}
+		AND WEEK = #{week}
+
+	</select>
+
+</mapper>

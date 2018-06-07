@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jiuzi.vue.web.dao.UserInfoDao">
+
+    <select id="queryUserInfoByErp" parameterType="map" resultType="com.jiuzi.vue.web.domain.UserInfo">
+        SELECT
+            erp,
+            email,
+            user_name AS userName,
+            photo_url AS photoUrl,
+            role AS role,
+            is_vote AS isVote
+        FROM
+            user_info
+        WHERE
+            erp = #{userErp,jdbcType=VARCHAR}
+    </select>
+
+    <select id="queryAllUserInfoList" parameterType="map" resultType="com.jiuzi.vue.web.domain.UserInfo">
+        SELECT
+            u.erp,
+            u.email,
+            u.user_name AS userName,
+            u.photo_url AS photoUrl,
+            u.role AS role,
+            u.is_vote AS isVote,
+            count(p.user_erp) count
+        FROM
+            user_info u
+        LEFT JOIN poll p ON u.erp = p.voter_erp
+        AND p.`week` = #{week}
+        GROUP BY
+            u.erp,
+            u.user_name,
+            u.photo_url,
+            u.role,
+            u.is_vote,
+            u.email
+        ORDER BY
+            u.user_name
+    </select>
+
+</mapper>

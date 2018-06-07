@@ -1,0 +1,126 @@
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue'
+import Vuex from 'vuex'
+import VueRouter from 'vue-router'
+import App from './App'
+import Axios from 'axios'
+import VueAxios from 'vue-axios'
+import Login from './components/Login'
+import Content from './components/Content'
+import vueLogger from 'vue-logger'
+
+Vue.use(Vuex);
+Vue.use(VueRouter);
+Vue.use(VueAxios, Axios);
+Vue.use(vueLogger, {
+  prefix: new Date(),
+  dev: true,
+  shortname: true,
+  levels: ['log', 'warn', 'debug', 'error', 'dir']
+});
+
+
+//路由配置
+//如果需要加菜单，就在这里添加路由，并在UserMenu.vue添加入口router-link
+const router = new VueRouter({
+  routes: [{
+    path: '/',
+    component: App
+  }, {
+    path: '/login',
+    component: Login
+  }, {
+    path: '/content',
+    component: Content
+  }, {
+    path: '*', //其他页面，强制跳转到登录页面
+    redirect: '/login'
+  }]
+});
+
+//Vuex配置
+const store = new Vuex.Store({
+  state: {
+    domain: 'http://localhost:8080', //保存后台请求的地址，修改时方便（比方说从测试服改成正式服域名）
+    userInfo: { //保存用户信息
+      nick: null,
+      ulevel: null,
+      uid: null,
+      portrait: null
+    }
+  },
+  getters: {
+    userInfo: state => {
+      const userInfo = state.userInfo;
+      console.log(userInfo);
+      return state.userInfo;
+    }
+  },
+  mutations: {
+    //更新用户信息
+    updateUserInfo(state, newUserInfo) {
+      console.log(state);
+      console.log(newUserInfo);
+      state.userInfo = newUserInfo;
+    }
+  }
+});
+
+//设置cookie,增加到vue实例方便全局调用
+//vue全局调用的理由是，有些组件所用到的接口可能需要session验证，session从cookie获取
+//当然，如果session保存到vuex的话除外
+Vue.prototype.setCookie = (c_name, value, expiredays) => {
+  var exdate = new Date();
+  exdate.setDate(exdate.getDate() + expiredays);
+  document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
+}
+
+//获取cookie、
+function getCookie(name) {
+  var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+  if (arr = document.cookie.match(reg))
+    return (arr[2]);
+  else
+    return null;
+}
+
+Vue.prototype.getCookie = getCookie;
+
+//删除cookie
+Vue.prototype.delCookie = (name) => {
+  var exp = new Date();
+  exp.setTime(exp.getTime() - 1);
+  var cval = getCookie(name);
+  if (cval != null)
+    document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
+};
+Vue.config.productionTip = false;
+
+
+/* eslint-disable no-new */
+var app = new Vue({
+  data: {},
+  el: '#app',
+  components: {App},
+  template: '<App/>',
+  router,
+  store,
+  watch: {
+    "$route": 'checkLogin'
+  },
+  created() {
+    this.checkLogin();
+  },
+  methods: {
+    checkLogin() {
+      console.log(this.$store.getters.userInfo);
+      //检查是否存在session
+      if (!this.getCookie('session')) {
+        this.$router.push('/login');
+      } else {
+        this.$router.push('/content');
+      }
+    }
+  }
+});

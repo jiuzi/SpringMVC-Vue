@@ -1,0 +1,50 @@
+<template>
+  <div id="app">
+    <transition>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </transition>
+  </div>
+</template>
+
+<script>
+
+  export default {
+    name: 'app',
+    data() {
+      return {
+        isLogin: false,
+        userInfo: {
+          "erp": "",
+          "userName": ""
+        }
+      }
+    },
+    mounted() {
+      //组件开始挂载时获取用户信息
+      this.getUserInfo();
+    },
+
+    methods: {
+      //请求用户的一些信息
+      getUserInfo() {
+        const userInfo = this.getCookie('session');
+        console.log(userInfo);
+
+        //提交mutation到Store
+        //  this.$store.commit('updateUserInfo', this.userInfo);
+      }
+    }
+  }
+</script>
+
+<style>
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+  }
+</style>

@@ -2,7 +2,7 @@
   "name": "praise",
   "version": "1.0.0",
   "description": "praise",
-  "author": "dbwcyang <wangchongyang@jd.com>",
+  "author": "dbwcyang <wangchongyang@live.cn>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
