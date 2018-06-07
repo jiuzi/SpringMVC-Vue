@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jiuzi.vue.web</groupId>
-    <artifactId>SpringMVC-VUE</artifactId>
+    <artifactId>praise</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
@@ -14,23 +14,32 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.compilerVersion>1.7</maven.compiler.compilerVersion>
+        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
         <build.file.encoding>UTF-8</build.file.encoding>
         <project.version>0.0.1-SNAPSHOT</project.version>
 
         <spring.version>4.3.17.RELEASE</spring.version>
         <junit.version>4.12</junit.version>
         <fasterxml.jackson.version>2.8.5</fasterxml.jackson.version>
-        <poi.version>3.8</poi.version>
         <lang3.version>3.5</lang3.version>
         <digester.version>2.1</digester.version>
         <fileupload.version>1.3.2</fileupload.version>
         <log4j.version>2.7</log4j.version>
 
+        <!-- data base -->
+        <dbcp.version>2.1.1</dbcp.version>
+        <mysql.driver.version>[5.1.18,)</mysql.driver.version>
+        <mybatis-spring.version>1.3.1</mybatis-spring.version>
+
     </properties>
 
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.5</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -129,6 +138,33 @@
         </dependency>
         <!-- log4J  end-->
 
+        <!-- jdbc mybatis begin -->
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.44</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis-spring.version}</version>
+        </dependency>
+        <!-- jdbc mybatis end -->
+
     </dependencies>
 
     <build>
@@ -159,22 +195,22 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
+                <version>3.7.0</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
-                    <compilerId>eclipse</compilerId>
-                    <optimize>true</optimize>
-                    <compilerVersion>${maven.compiler.compilerVersion}</compilerVersion>
+                    <!--                    <compilerId>eclipse</compilerId>
+                                        <optimize>true</optimize>
+                                        <compilerVersion>${maven.compiler.compilerVersion}</compilerVersion>-->
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-compiler-eclipse</artifactId>
-                        <version>1.9.1</version>
-                    </dependency>
-                </dependencies>
+                <!--                <dependencies>
+                                    <dependency>
+                                        <groupId>org.codehaus.plexus</groupId>
+                                        <artifactId>plexus-compiler-eclipse</artifactId>
+                                        <version>1.9.1</version>
+                                    </dependency>
+                                </dependencies>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -208,6 +244,8 @@
                 <configuration>
                     <installDirectory>target</installDirectory>
                     <workingDirectory>src/main/vue-src</workingDirectory>
+                    <nodeDownloadRoot>http://storage.jd.local/disk/</nodeDownloadRoot>
+                    <npmDownloadRoot>http://storage.jd.local/disk/npm/</npmDownloadRoot>
                 </configuration>
                 <executions>
                     <execution>
@@ -222,14 +260,25 @@
                         </configuration>
                     </execution>
 
+                    <!-- http://artifactory.jd.com/npm.taobao-cache/ -->
+
+                    <execution>
+                        <id>npm config</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>config set registry http://artifactory.jd.com/api/npm/npm.taobao/</arguments>
+                        </configuration>
+                    </execution>
+
                     <execution>
                         <id>npm install</id>
                         <goals>
                             <goal>npm</goal>
                         </goals>
-                        <!-- Optional configuration which provides for running any npm command -->
                         <configuration>
-                            <arguments>install</arguments>
+                            <arguments>install --no-optional</arguments>
                         </configuration>
                     </execution>
 

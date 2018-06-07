@@ -26,6 +26,12 @@
             <param-value>true</param-value>
         </init-param>
     </filter>
+    <!-- 浏览器不支持put,delete等method,由该filter将/blog?_method=delete转换为标准的http delete方法 -->
+    <filter>
+        <filter-name>httpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+
     <filter-mapping>
         <filter-name>encodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -33,11 +39,11 @@
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
 
-<!--
-    <listener>
-        <listener-class>com.jiuzi.billing.h2db.H2DBServerStartListener</listener-class>
-    </listener>
--->
+    <filter-mapping>
+        <filter-name>httpMethodFilter</filter-name>
+        <servlet-name>praise-web</servlet-name>
+    </filter-mapping>
+    
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -50,7 +56,7 @@
 
 
     <servlet>
-        <servlet-name>billing-web</servlet-name>
+        <servlet-name>praise-web</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -59,33 +65,10 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>billing-web</servlet-name>
-        <url-pattern>*.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>billing-web</servlet-name>
-        <url-pattern>*.json</url-pattern>
+        <servlet-name>praise-web</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!-- 使用H2控制台的Servlet H2控制台是一个独立的应用程序，包括它自己的Web服务器，但它可以作为一个servlet作为-->
-<!--    <servlet>
-        <servlet-name>H2Console</servlet-name>
-        <servlet-class>org.h2.server.web.WebServlet</servlet-class>
-        &lt;!&ndash;        <init-param>
-                    <param-name>webAllowOthers</param-name>
-                    <param-value></param-value>
-                </init-param>
-                <init-param>
-                    <param-name>trace</param-name>
-                    <param-value></param-value>
-                </init-param>&ndash;&gt;
-        <load-on-startup>1</load-on-startup>
-    </servlet>-->
-    <!-- 映射H2控制台的访问路径 -->
-<!--    <servlet-mapping>
-        <servlet-name>H2Console</servlet-name>
-        <url-pattern>/console/*</url-pattern>
-    </servlet-mapping>-->
 
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

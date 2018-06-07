@@ -1,7 +1,7 @@
 {
-  "name": "eclp-goods-web",
+  "name": "praise",
   "version": "1.0.0",
-  "description": "eclp-goods-web",
+  "description": "praise",
   "author": "dbwcyang <wangchongyang@jd.com>",
   "private": true,
   "scripts": {
@@ -15,7 +15,12 @@
     "vue": "^2.5.2"
   },
   "devDependencies": {
+    "ajv": "^6.5.0",
+    "jquery": "^3.3.1",
+    "vue-logger": "0.0.3",
+    "vue-awesome": "^2.3.7",
     "autoprefixer": "^7.1.2",
+    "axios": "^0.18.0",
     "babel-core": "^6.22.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-loader": "^7.1.1",
@@ -43,9 +48,14 @@
     "shelljs": "^0.7.6",
     "uglifyjs-webpack-plugin": "^1.1.1",
     "url-loader": "^0.5.8",
+    "vue-axios": "^2.1.1",
+    "vuex": "^3.0.1",
     "vue-loader": "^13.3.0",
+    "vue-router": "^3.0.1",
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
+    "bootstrap": "^4.1.1",
+    "bootstrap-vue": "^2.0.0-rc.11",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",

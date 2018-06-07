@@ -6,7 +6,6 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.jiuzi.billing" level="info"></Logger>
         <Root level="info">
             <AppenderRef ref="console"/>
         </Root>
