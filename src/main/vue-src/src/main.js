@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import APP from "App"
-
-/*import routes from './config/routes'*/
+import routes from './config/routes'
 import store from './store/'
 import components from './components/' //加载公共组件
 
@@ -17,8 +15,7 @@ Vue.use(VueRouter)
 
 
 const router = new VueRouter({
-  path: '/',
-  component: App
+  routes
 })
 router.beforeEach(({meta, path}, from, next) => {
   var {auth = true} = meta
