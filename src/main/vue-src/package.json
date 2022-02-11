@@ -15,7 +15,7 @@
     "vue": "^2.5.2"
   },
   "devDependencies": {
-    "ajv": "^6.5.0",
+    "ajv": "^6.12.3",
     "jquery": "^3.3.1",
     "vue-logger": "0.0.3",
     "vue-awesome": "^2.3.7",
