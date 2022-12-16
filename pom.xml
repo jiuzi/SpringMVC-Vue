@@ -18,7 +18,7 @@
         <build.file.encoding>UTF-8</build.file.encoding>
         <project.version>0.0.1-SNAPSHOT</project.version>
 
-        <spring.version>4.3.17.RELEASE</spring.version>
+        <spring.version>5.2.20.RELEASE</spring.version>
         <junit.version>4.12</junit.version>
         <fasterxml.jackson.version>2.8.5</fasterxml.jackson.version>
         <lang3.version>3.5</lang3.version>
